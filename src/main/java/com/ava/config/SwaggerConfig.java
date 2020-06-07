@@ -35,7 +35,7 @@ public class SwaggerConfig {
 				"Spring Boot REST API for User Management Service",
 				"1.0",
 				"Terms of service",
-				new Contact("Bojan Trifkovic", "", "bojantrifkovic92@gmail.com"), //todo add github address
+				new Contact("Bojan Trifkovic", "https://github.com/bojan12345/Ava-Team-Task", "bojantrifkovic92@gmail.com"),
 				"Apache License Version 2.0",
 				"https://www.apache.org/licenses/LICENSE-2.0");
 
