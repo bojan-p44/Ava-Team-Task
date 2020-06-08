@@ -1,5 +1,6 @@
-package com.ava.entity;
+package com.ava.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
@@ -35,6 +36,7 @@ public class User implements Serializable {
 
 	@Column(name = "password", nullable = false)
 	@ApiModelProperty(notes = "The password of User")
+	@JsonIgnore
 	private String password;
 
 	@Column(name = "country", nullable = false)
@@ -45,17 +47,8 @@ public class User implements Serializable {
 	@ApiModelProperty(notes = "The address of User")
 	private String address;
 
-	@Column(name = "is_admin", nullable = false)
-	@ApiModelProperty(notes = "A flag that means whether the User is an Admin or not")
-	private Boolean isAdmin;
-
-	public User(String firstName, String lastName, String email, String decodedPassword, String country, String address, Boolean isAdmin) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.password = decodedPassword;
-		this.country = country;
-		this.address = address;
-		this.isAdmin = isAdmin;
-	}
+	@Column(name = "role", nullable = false, length = 20)
+	@Enumerated(EnumType.STRING)
+	@ApiModelProperty(notes = "The Role of User")
+	private Role role;
 }

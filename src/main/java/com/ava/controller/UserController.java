@@ -1,28 +1,32 @@
 package com.ava.controller;
 
 import com.ava.config.SwaggerConfig;
-import com.ava.entity.User;
 import com.ava.exception.ResourceAlreadyExists;
-import com.ava.request.CreateAdminUserRequest;
+import com.ava.model.User;
+import com.ava.model.UserDTO;
 import com.ava.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Base64;
 
 @RestController
 @RequestMapping("/user")
-@Api(tags = {SwaggerConfig.TAG})
+@Api(tags = "user-controller")
 public class UserController {
 
 	@Autowired
 	private UserService userService;
+
+	@GetMapping("/test")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public String test(){
+		return "Test";
+	}
 
 	@ApiOperation(value = "Create Admin User", response = ResponseEntity.class)
 	@ApiResponses(value = {
@@ -33,23 +37,8 @@ public class UserController {
 			@ApiResponse(code = 409, message = "User already registered")
 	})
 	@PostMapping(path = "/admin/create", produces = "application/json")
-	public ResponseEntity createAdminUser(@RequestBody CreateAdminUserRequest request) {
-
-		if (userService.findUserByEmail(request.getEmail()) != null) {
-			throw new ResourceAlreadyExists("User with this email address is already registered!");
-		}
-
-		User user = new User(request.getFirstName(),
-				request.getLastName(),
-				request.getEmail(),
-				new String(Base64.getEncoder().encode(request.getPassword().getBytes())),
-				request.getCountry(),
-				request.getAddress(),
-				Boolean.TRUE);
-
-		userService.save(user);
-
-		return new ResponseEntity(HttpStatus.CREATED);
+	public String createAdminUser() {
+		return "test";
 	}
 
 }

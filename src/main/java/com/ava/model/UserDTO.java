@@ -1,11 +1,11 @@
-package com.ava.request;
+package com.ava.model;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateAdminUserRequest {
+public class UserDTO {
 
 	private String firstName;
 	private String lastName;

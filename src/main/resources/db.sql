@@ -1,6 +1,6 @@
-CREATE DATABASE ava;
+CREATE DATABASE ava_db;
 
-CREATE TABLE ava.users (
+CREATE TABLE ava_db.users (
     id INT NOT NULL PRIMARY KEY auto_increment,
     first_name VARCHAR (50) NOT NULL ,
     last_name VARCHAR (50) NOT NULL ,
@@ -8,11 +8,11 @@ CREATE TABLE ava.users (
     password VARCHAR (255) NOT NULL ,
     country VARCHAR (50) NOT NULL ,
     address VARCHAR (255) NOT NULL ,
-    is_admin INT NOT NULL DEFAULT 0
+    role VARCHAR (20) NOT NULL
 );
 
-INSERT INTO ava.users (first_name, last_name, email, password, country, address, is_admin)
-VALUES ("Admin", "Admin", "admin@email.com", "admin", "Serbia", "Belgrade, New Belgrade", 1);
+INSERT INTO ava_db.users (first_name, last_name, email, password, country, address, role)
+VALUES ("Admin", "Admin", "admin@email.com", "$2a$10$/dC8AiRx7LXbHkvFQ4O2zuDdGcWAzXGOB4fdSm8HdjX5G2wrsJJ2m", "Serbia", "Belgrade, New Belgrade", "ROLE_ADMIN");
 
-INSERT INTO ava.users (first_name, last_name, email, password, country, address, is_admin)
-VALUES ("Standard", "Standard", "standard@email.com", "standard", "USA", "NY", 0);
+INSERT INTO ava_db.users (first_name, last_name, email, password, country, address, role)
+VALUES ("Standard", "Standard", "standard@email.com", "$2a$10$jYNd9gGRO9fIAneI/BVB8exONWQbhx/leU6sE6cSFDihQ0nczmBK.", "USA", "NY", "ROLE_STANDARD");

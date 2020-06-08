@@ -1,6 +1,6 @@
 package com.ava.service;
 
-import com.ava.entity.User;
+import com.ava.model.User;
 
 
 public interface UserService {
