@@ -1,4 +1,4 @@
-package com.ava.model.enumeration;
+package com.ava.entity.enumeration;
 
 public enum Role {
 

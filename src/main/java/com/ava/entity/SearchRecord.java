@@ -1,7 +1,5 @@
-package com.ava.model;
+package com.ava.entity;
 
-
-import com.ava.model.enumeration.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

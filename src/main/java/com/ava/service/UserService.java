@@ -1,7 +1,10 @@
 package com.ava.service;
 
-import com.ava.model.*;
-import com.ava.model.enumeration.Role;
+import com.ava.entity.*;
+import com.ava.entity.enumeration.Role;
+import com.ava.entity.request.CreateUserRequest;
+import com.ava.entity.request.UpdateCurrentUserRequest;
+import com.ava.entity.request.UpdateUserRequest;
 
 import java.util.List;
 

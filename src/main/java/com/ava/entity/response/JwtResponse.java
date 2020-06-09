@@ -1,4 +1,4 @@
-package com.ava.model;
+package com.ava.entity.response;
 
 import java.io.Serializable;
 
