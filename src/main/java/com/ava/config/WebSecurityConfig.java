@@ -1,5 +1,8 @@
 package com.ava.config;
 
+import com.ava.config.jwt.JwtAuthenticationEntryPoint;
+import com.ava.config.jwt.JwtRequestFilter;
+import com.ava.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
 	@Autowired
-	private UserDetailsService jwtUserDetailsService;
+	private UserServiceImpl jwtUserDetailsService;
 
 	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
@@ -48,8 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable()
-				.authorizeRequests().antMatchers("/authenticate",
-				"/register",
+				.authorizeRequests().antMatchers("/login",
 				"/v2/api-docs",
 				"/swagger-resources/**",
 				"/swagger-ui.html",

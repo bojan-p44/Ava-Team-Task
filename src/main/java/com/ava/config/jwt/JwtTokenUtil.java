@@ -1,4 +1,4 @@
-package com.ava.config;
+package com.ava.config.jwt;
 
 import java.io.Serializable;
 import java.util.Date;
