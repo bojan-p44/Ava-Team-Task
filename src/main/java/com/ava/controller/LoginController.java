@@ -1,8 +1,8 @@
 package com.ava.controller;
 
-import com.ava.config.jwt.JwtTokenUtil;
-import com.ava.entity.request.JwtRequest;
-import com.ava.entity.response.JwtResponse;
+import com.ava.security.JwtTokenUtil;
+import com.ava.dto.JwtRequest;
+import com.ava.model.response.JwtResponse;
 import com.ava.service.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

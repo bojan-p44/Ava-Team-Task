@@ -1,4 +1,4 @@
-package com.ava.entity;
+package com.ava.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

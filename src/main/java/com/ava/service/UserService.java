@@ -1,10 +1,11 @@
 package com.ava.service;
 
-import com.ava.entity.*;
-import com.ava.entity.enumeration.Role;
-import com.ava.entity.request.CreateUserRequest;
-import com.ava.entity.request.UpdateCurrentUserRequest;
-import com.ava.entity.request.UpdateUserRequest;
+import com.ava.dto.SearchRecord;
+import com.ava.model.*;
+import com.ava.model.enumeration.Role;
+import com.ava.dto.CreateUserRequest;
+import com.ava.dto.UpdateCurrentUserRequest;
+import com.ava.dto.UpdateUserRequest;
 
 import java.util.List;
 

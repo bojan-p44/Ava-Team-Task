@@ -1,4 +1,4 @@
-package com.ava.entity.request;
+package com.ava.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

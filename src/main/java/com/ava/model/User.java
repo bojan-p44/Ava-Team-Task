@@ -1,6 +1,6 @@
-package com.ava.entity;
+package com.ava.model;
 
-import com.ava.entity.enumeration.Role;
+import com.ava.model.enumeration.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;

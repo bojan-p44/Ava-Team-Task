@@ -1,13 +1,14 @@
 package com.ava.service;
 
+import com.ava.dto.SearchRecord;
 import com.ava.exception.BadRequestException;
 import com.ava.exception.UserAlreadyExists;
 import com.ava.exception.UserNotFoundException;
-import com.ava.entity.*;
-import com.ava.entity.enumeration.Role;
-import com.ava.entity.request.CreateUserRequest;
-import com.ava.entity.request.UpdateCurrentUserRequest;
-import com.ava.entity.request.UpdateUserRequest;
+import com.ava.model.*;
+import com.ava.model.enumeration.Role;
+import com.ava.dto.CreateUserRequest;
+import com.ava.dto.UpdateCurrentUserRequest;
+import com.ava.dto.UpdateUserRequest;
 import com.ava.repository.UserRepository;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public List<User> findUsers( String role,SearchRecord searchRecord) {
+	public List<User> findUsers(String role, SearchRecord searchRecord) {
 		return userRepository.findBy(role,searchRecord);
 	}
 

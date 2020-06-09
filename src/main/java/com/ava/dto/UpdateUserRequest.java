@@ -1,6 +1,6 @@
-package com.ava.entity.request;
+package com.ava.dto;
 
-import com.ava.entity.enumeration.Role;
+import com.ava.model.enumeration.Role;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;

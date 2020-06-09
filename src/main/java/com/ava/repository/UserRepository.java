@@ -1,7 +1,7 @@
 package com.ava.repository;
 
-import com.ava.entity.SearchRecord;
-import com.ava.entity.User;
+import com.ava.dto.SearchRecord;
+import com.ava.model.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

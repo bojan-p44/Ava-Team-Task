@@ -1,4 +1,4 @@
-package com.ava.entity.response;
+package com.ava.dto;
 
 import java.io.Serializable;
 
