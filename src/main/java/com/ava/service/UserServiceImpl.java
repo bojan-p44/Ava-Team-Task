@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		user.setEmail(request.getEmail());
 		user.setAddress(request.getAddress());
 		user.setCountry(request.getCountry());
-		user.setPassword(request.getPassword());
+		user.setPassword(bcryptEncoder.encode(request.getPassword()));
 		return userRepository.save(user);
 	}
 
