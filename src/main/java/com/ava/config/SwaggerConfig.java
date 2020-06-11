@@ -21,7 +21,7 @@ public class SwaggerConfig {
 	public Docket newsApi() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-				.apis(RequestHandlerSelectors.any())
+				.apis( RequestHandlerSelectors.basePackage( "com.ava.controller" ) )
 				.paths(PathSelectors.any())
 				.build()
 				.securitySchemes(Lists.newArrayList(apiKey()))

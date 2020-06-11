@@ -1,6 +1,7 @@
 package com.ava.dto;
 
 import com.ava.model.enumeration.Role;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @ToString
+@ApiModel
 public class UpdateUserRequest {
 
 	@ApiModelProperty(notes = "The first name of User")

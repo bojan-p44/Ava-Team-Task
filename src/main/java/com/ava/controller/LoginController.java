@@ -37,7 +37,7 @@ public class LoginController {
 	@ApiOperation(value = "User login and security token generating", response = ResponseEntity.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "User successfully logged in, token successfully generated"),
-			@ApiResponse(code = 401, message = "User doesn't exist"),
+			@ApiResponse(code = 401, message = "User not authorized"),
 	})
 	@PostMapping(path = "/login", produces = "application/json")
 	public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest authenticationRequest) throws Exception {
