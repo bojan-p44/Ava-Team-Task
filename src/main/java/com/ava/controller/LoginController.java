@@ -1,13 +1,14 @@
 package com.ava.controller;
 
+import com.ava.dto.JwtResponse;
 import com.ava.security.JwtTokenUtil;
 import com.ava.dto.JwtRequest;
-import com.ava.model.response.JwtResponse;
 import com.ava.service.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin
 @Api(tags = "login-controller")
+@Log4j2
 public class LoginController {
 
 	@Autowired
@@ -47,6 +49,8 @@ public class LoginController {
 
 		final String token = jwtTokenUtil.generateToken(userDetails);
 
+		log.info("User with email: " + authenticationRequest.getUsername() + " has logged in");
+		
 		return new ResponseEntity<>(new JwtResponse(token), HttpStatus.OK);
 	}
 

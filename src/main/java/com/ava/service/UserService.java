@@ -12,15 +12,17 @@ import java.util.List;
 
 public interface UserService {
 
-	User updateCurrentUser(String email, UpdateCurrentUserRequest request);
+	User updateCurrentUser(UpdateCurrentUserRequest request);
 
 	User updateUser(Long id, UpdateUserRequest user);
 
 	User saveUser(CreateUserRequest user, Role role);
 
-	User findUserByEmail(String email);
+	User findCurrentUser();
 
 	User findUserById(Long id);
 
 	List<User> findUsers(String role, SearchRecord searchRecord);
+
+	String getCurrentUserEmail();
 }

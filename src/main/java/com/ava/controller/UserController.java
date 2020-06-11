@@ -8,12 +8,11 @@ import com.ava.dto.UpdateCurrentUserRequest;
 import com.ava.dto.UpdateUserRequest;
 import com.ava.service.UserService;
 import io.swagger.annotations.*;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 @Api(tags = "user-controller")
+@Log4j2
 public class UserController {
 
 	@Autowired
@@ -47,8 +47,10 @@ public class UserController {
 
 		SearchRecord searchRecord = new SearchRecord(firstName, lastName, email, address, country);
 		if (role != null) {
+			log.info("Admin User with email: " + userService.getCurrentUserEmail() + " searching for users by params: " + searchRecord.toString() + " and role: " + role.name());
 			return userService.findUsers(role.name(), searchRecord);
 		} else {
+			log.info("Admin User with email: " + userService.getCurrentUserEmail() + " searching for users by params: " + searchRecord.toString());
 			return userService.findUsers(null, searchRecord);
 		}
 	}
@@ -62,6 +64,7 @@ public class UserController {
 	@GetMapping("/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public User getUserDetails(@PathVariable Long id) {
+		log.info("Admin User with email: " + userService.getCurrentUserEmail() + " searching for User details with id: " + id);
 		return userService.findUserById(id);
 	}
 
@@ -74,9 +77,7 @@ public class UserController {
 	})
 	@GetMapping("/myDetails")
 	public User getMyDetails() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String currentUserEmail = authentication.getName();
-		return userService.findUserByEmail(currentUserEmail);
+		return userService.findCurrentUser();
 	}
 
 	// POST
@@ -93,6 +94,7 @@ public class UserController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<User> createAdminUser(@RequestBody CreateUserRequest request) {
 		User user = userService.saveUser(request, Role.ROLE_ADMIN);
+		log.info("Admin User with email: " + userService.getCurrentUserEmail() + " created Admin user, data: " + request.toString());
 		return new ResponseEntity<>(user, HttpStatus.CREATED);
 	}
 
@@ -108,6 +110,7 @@ public class UserController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<User> createStandardUser(@Valid @RequestBody CreateUserRequest request) {
 		User user = userService.saveUser(request, Role.ROLE_STANDARD);
+		log.info("Admin User with email: " + userService.getCurrentUserEmail() + " created Standard user, data: " + request.toString());
 		return new ResponseEntity<>(user, HttpStatus.CREATED);
 	}
 
@@ -126,6 +129,7 @@ public class UserController {
 	public ResponseEntity<User> editUserDetails(@PathVariable Long id,
 												@Valid @RequestBody UpdateUserRequest request) {
 		User user = userService.updateUser(id, request);
+		log.info("Admin User with email: " + userService.getCurrentUserEmail() + " updated user details for user with id: " + id +", data: " + request.toString());
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
@@ -137,12 +141,10 @@ public class UserController {
 			@ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
 			@ApiResponse(code = 409, message = "User with email already registered")
 	})
-	@ApiParam(value = "User Id", required = true)
 	@PutMapping(path = "/edit/myDetails", produces = "application/json")
 	public ResponseEntity<User> editMyDetails(@Valid @RequestBody UpdateCurrentUserRequest request) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String currentUserEmail = authentication.getName();
-		User user = userService.updateCurrentUser(currentUserEmail, request);
+		User user = userService.updateCurrentUser(request);
+		log.info("User with email: " + userService.getCurrentUserEmail() + " updated own details, data: " + request.toString());
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 

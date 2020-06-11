@@ -2,7 +2,7 @@ package com.ava.service;
 
 import com.ava.dto.SearchRecord;
 import com.ava.exception.BadRequestException;
-import com.ava.exception.UserAlreadyExists;
+import com.ava.exception.UserAlreadyExistsException;
 import com.ava.exception.UserNotFoundException;
 import com.ava.model.*;
 import com.ava.model.enumeration.Role;
@@ -10,10 +10,13 @@ import com.ava.dto.CreateUserRequest;
 import com.ava.dto.UpdateCurrentUserRequest;
 import com.ava.dto.UpdateUserRequest;
 import com.ava.repository.UserRepository;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,6 +30,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Log4j2
 public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Autowired
@@ -36,11 +40,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	private PasswordEncoder bcryptEncoder;
 
 	@Override
-	public User findUserByEmail(String email) {
-		Optional<User> user = userRepository.findUserByEmail(email);
-		if (!user.isPresent()) {
-			throw new UserNotFoundException("User with email: " + email + " doesn't exist");
-		}
+	public User findCurrentUser() {
+		Optional<User> user = userRepository.findUserByEmail(getCurrentUserEmail());
 		return user.get();
 	}
 
@@ -48,6 +49,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	public User findUserById(Long id) {
 		Optional<User> user = userRepository.findUserById(id);
 		if (!user.isPresent()) {
+			log.error("User with email: " + getCurrentUserEmail() + " searching for non existing user id: " + id);
 			throw new UserNotFoundException("User with id: " + id + " doesn't exists");
 		}
 		return user.get();
@@ -63,7 +65,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		Optional<User> user = userRepository.findUserByEmail(email);
 		if (!user.isPresent()) {
-			throw new UsernameNotFoundException("User not found with email: " + email);
+			log.error("User with email: " + getCurrentUserEmail() + " trying to login, but not registered");
+			throw new UsernameNotFoundException("User with email: " + email + " doesn't exist");
 		}
 
 		List<String> role = new ArrayList<>();
@@ -82,7 +85,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	public User saveUser(CreateUserRequest request, Role role) {
 		Optional<User> user = userRepository.findUserByEmail(request.getEmail());
 		if (user.isPresent()) {
-			throw new UserAlreadyExists("User with email: " + request.getEmail() + " already exists");
+			log.error("User with email: " + getCurrentUserEmail() + " trying to add existing user email: " + request.getEmail());
+			throw new UserAlreadyExistsException("User with email: " + request.getEmail() + " already exists");
 		}
 		User newUser = new User();
 		newUser.setFirstName(request.getFirstName());
@@ -97,10 +101,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Override
 	@Transactional
-	public User updateCurrentUser(String email, UpdateCurrentUserRequest request) {
-		User user = findUserByEmail(email);
+	public User updateCurrentUser(UpdateCurrentUserRequest request) {
+		User user = findCurrentUser();
 		if (userRepository.existsUsersByEmailAndIdNotLike(request.getEmail(), user.getId())) {
-			throw new UserAlreadyExists("User with email: " + request.getEmail() + " already exists");
+			log.error("User with email: " + getCurrentUserEmail() + " trying to add existing user email: " + request.getEmail());
+			throw new UserAlreadyExistsException("User with email: " + request.getEmail() + " already exists");
 		}
 		if (!request.getPassword().equals(request.getPasswordConfirm())) {
 			throw new BadRequestException("Password and Confirm password don't have the same value");
@@ -119,7 +124,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	public User updateUser(Long id, UpdateUserRequest request) {
 		User user = findUserById(id);
 		if (userRepository.existsUsersByEmailAndIdNotLike(request.getEmail(), id)) {
-			throw new UserAlreadyExists("User with email: " + request.getEmail() + " already exists");
+			log.error("User with email: " + getCurrentUserEmail() + " trying to add existing user email: " + request.getEmail());
+			throw new UserAlreadyExistsException("User with email: " + request.getEmail() + " already exists");
 		}
 		if (!EnumUtils.isValidEnum(Role.class, request.getRole().name())) {
 			throw new BadRequestException("Role with name: " + request.getRole().name() + " doesn't exist");
@@ -131,5 +137,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		user.setFirstName(request.getFirstName());
 		user.setLastName(request.getLastName());
 		return userRepository.save(user);
+	}
+
+	@Override
+	public String getCurrentUserEmail(){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return authentication.getName();
 	}
 }

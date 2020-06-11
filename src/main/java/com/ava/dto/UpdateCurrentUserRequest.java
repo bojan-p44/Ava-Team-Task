@@ -3,11 +3,13 @@ package com.ava.dto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.*;
 
 @Getter
 @Setter
+@ToString
 public class UpdateCurrentUserRequest {
 
 	@ApiModelProperty(notes = "The first name of User")
