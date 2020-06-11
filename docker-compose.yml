@@ -1,0 +1,24 @@
+version: '3'
+services:
+  docker-mysql:
+    restart: always
+    container_name: docker-mysql
+    image: mysql
+    environment:
+      - MYSQL_ONETIME_PASSWORD=true
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    ports:
+      - "6033:3306"
+  ava-app:
+    restart: on-failure
+    build: .
+    ports:
+      - 8080:8080
+    depends_on:
+      - docker-mysql
+    environment:
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+      SPRING_DATASOURCE_URL: jdbc:mysql://docker-mysql/${MYSQL_DB}?useSSL=false&allowPublicKeyRetrieval=true
+    command: mvn clean spring-boot:run
