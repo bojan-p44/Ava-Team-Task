@@ -11,10 +11,10 @@ import java.io.Serializable;
 public class JwtResponse implements Serializable {
 
 	@ApiModelProperty(notes = "Auto-generated JSON Web Token")
-	private final String jwttoken;
+	private final String jwt;
 
-	public JwtResponse(String jwttoken) {
-		this.jwttoken = jwttoken;
+	public JwtResponse(String jwt) {
+		this.jwt = jwt;
 	}
 
 
