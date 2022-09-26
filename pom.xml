@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.ava</groupId>
 	<artifactId>ava</artifactId>
-	<version>1.0</version>
+	<version>2.0</version>
 	<name>Ava</name>
 	<description>Demo project for Ava team</description>
 
@@ -100,6 +100,14 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>2.4.2</version>
+				<configuration>
+					<image>
+						<!-- name prefix must be docker hub username !!! -->
+						<name>bojan92/${project.artifactId}:${project.version}</name>
+					</image>
+					<pullPolicy>IF_NOT_PRESENT</pullPolicy>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
