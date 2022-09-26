@@ -1,5 +1,6 @@
-#FROM java:8
-#COPY target/ava-0.0.1-SNAPSHOT.jar ava-0.0.1-SNAPSHOT.jar
-#ENTRYPOINT ["java","-jar","ava-0.0.1-SNAPSHOT.jar"]
+FROM adoptopenjdk/openjdk14
 
-FROM maven:3.5-jdk-8
+ADD target/ava-1.0.jar ava-1.0.jar
+EXPOSE 8080
+
+ENTRYPOINT ["java","-jar","ava-1.0.jar"]
