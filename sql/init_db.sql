@@ -1,4 +1,4 @@
-CREATE DATABASE ava_db;
+-- CREATE DATABASE ava_db;
 
 CREATE TABLE ava_db.users (
     id INT NOT NULL PRIMARY KEY auto_increment,

@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -45,6 +46,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		return user.get();
 	}
 
+	/**
+	 * Returns User by id value.
+	 *
+	 * @param id user id value, must be valid
+	 * @return User object
+	 * @throws UserNotFoundException if user with passed id does not exist.
+	 */
 	@Override
 	public User findUserById(Long id) {
 		Optional<User> user = userRepository.findUserById(id);
