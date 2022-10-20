@@ -18,7 +18,7 @@ import java.util.List;
 public class SwaggerConfig {
 
 	@Bean
-	public Docket newsApi() {
+	public Docket avaApi() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
 				.apis( RequestHandlerSelectors.basePackage( "com.ava.controller" ) )
